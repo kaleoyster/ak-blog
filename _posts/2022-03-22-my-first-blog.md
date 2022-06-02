@@ -15,12 +15,4 @@ The above graph presents the rise in surface temperature with respect to hemisph
 
 # Fact 3:
 
-This is my screen shot:
-
-# How does this work?
-# Data sources
-1. Carbon emission datas
-# Code
-1. github (possibly favicon): 
-    
 # References 
