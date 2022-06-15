@@ -16,11 +16,11 @@ paginate_path: /blog/page:num/
 
 # Social media links in footer
 facebook: "#"
-twitter: "#"
+twitter: "KaleNotTheSalad"
 linkedin: "#"
 github: "kaleoyster"
 researchgate: "#"
-orcid: "#"
+orcid: "0000-0001-6191-7996"
 
 highlighter: rouge
 markdown: kramdown
