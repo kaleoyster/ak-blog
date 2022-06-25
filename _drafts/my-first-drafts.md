@@ -1,5 +1,4 @@
---
-layout: post
 ---
-
-Some draft content
+layout: post
+title: draft
+---
