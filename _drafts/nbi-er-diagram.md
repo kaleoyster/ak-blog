@@ -5,7 +5,6 @@ title: er-diagram
 
 
 
-
 | Attribute name                                             | Data type |  Value  |  Rules |  Nullable | Constraint | PK/FK                     |
 |------------------------------------------------------------|-----------|---------|--------|-----------|------------|---------------------------|
 | structure_number                                           | varchar   |         |        | not null  |            | primary key / foreign key |
