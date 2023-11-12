@@ -7,7 +7,7 @@ profile:
 :published: true
 ---
 
-**Hello!**🖖
+**Hello! Everyone**🖖
 
 * 💻 🧪 I'm interested in computer science
 * 📚 I'm currently a Ph.D. candidate at University of Nebraska at Omaha
