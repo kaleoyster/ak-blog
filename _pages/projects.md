@@ -32,9 +32,7 @@ published: true
           </span>
           </a>
   </div>
-
   {% endif %}
-
   {% endfor %}
 
 	</div>

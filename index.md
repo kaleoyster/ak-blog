@@ -7,10 +7,9 @@ profile:
 :published: true
 ---
 
-**Hello! Everyone**🖖
+**Hello!**🖖
 
 * 💻 🧪 I'm interested in computer science
-* 📚 I'm currently a Ph.D. candidate at University of Nebraska at Omaha
+* 📚    I'm currently ABD Ph.D. candidate at University of Nebraska at Omaha
 * 🌁 I'm currently working on developing models to predict future bridge maintenances
 * 🤖 I'm looking to collaborate on Ml/AI projects
-

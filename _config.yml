@@ -4,7 +4,7 @@ description: Ph.D. Candidate | University of Nebraska | Artificial Intelligence
 
 baseurl: /ak-blog #name of GitHub repository
 url: "" #custom url to be used instead of GitHub repository
-email: akshaykale915@gmail.com
+email: akshaykale4@icloud.com
 
 highlighter: rouge
 markdown: kramdown
@@ -42,14 +42,18 @@ compress_html:
 # Collection
 collections:
   projects:
-    output: true
+    output: false
     permalink: /projects/:path/
   resumes:
-    output: true
+    output: false
     permalink: /resumes/:path/
   drafts:
-    output: true
+    output: false
     permalink: /drafts/:path/
+  research:
+    output: false
+    permalink: /projects/:path/
+
 
 sass:
   sass_dir: /assets/css/_sass
