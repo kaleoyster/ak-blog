@@ -1,12 +1,11 @@
 ---
 layout: about
 permalink: /
-profile:
-  align: right
-  image: profile.jpeg
+#profile:
+#  align: right
+#  image: profile.jpeg
 :published: true
 ---
-
 **Hello!**🖖
 
 * 💻 🧪 I'm interested in computer science
