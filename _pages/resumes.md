@@ -4,9 +4,12 @@ layout: default
 permalink: /resumes/
 published: true
 ---
+
 <div class="ProjectContainer">
-    <div class="gallery">
+	<div class="gallery">
+
   {% for project in site.projects %}
+
   {% if resume.redirect %}
   <div class="projectTile">
           <a href="{{ resumes.redirect }}" target="_blank">
@@ -17,6 +20,7 @@ published: true
           </span>
           </a>
   </div>
+
   {% else %}
 
   <div class="projectTile">
@@ -33,6 +37,6 @@ published: true
 
   {% endfor %}
 
-</div>
+	</div>
 
 </div>

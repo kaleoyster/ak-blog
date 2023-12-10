@@ -1,7 +1,6 @@
 ### your site title here
 title: Akshay Kale
-description: Ph.D. Candidate | University of Nebraska | Artificial Intelligence
-
+description: Ph.D. Candidate| Data Science | Artificial Intelligenc
 baseurl: /ak-blog #name of GitHub repository
 url: "" #custom url to be used instead of GitHub repository
 email: akshaykale4@icloud.com
@@ -15,15 +14,15 @@ permalink: /blog/:year/:title/
 paginate_path: /blog/page:num/
 
 # Social media links in footer
-facebook: "#"
+#facebook: "#"
 twitter: "KaleNotTheSalad"
-linkedin: "#"
+#linkedin: "#"
 github: "kaleoyster"
 researchgate: "Akshay-Kale-2"
-googlescholar: "nmE-DNUAAAAJ&hl=en&oi=sra"
+#googlescholar: "nmE-DNUAAAAJ&hl=en&oi=sra"
 orcid: "0000-0001-6191-7996"
 
-highlighter: rouge
+hhighlighter: rouge
 markdown: kramdown
 
 # Tracker
@@ -43,18 +42,11 @@ compress_html:
 # Collection
 collections:
   projects:
-    output: false
+    output: true
     permalink: /projects/:path/
   resumes:
-    output: false
+    output: true
     permalink: /resumes/:path/
-  drafts:
-    output: false
-    permalink: /drafts/:path/
-  research:
-    output: false
-    permalink: /projects/:path/
-
 
 sass:
   sass_dir: /assets/css/_sass

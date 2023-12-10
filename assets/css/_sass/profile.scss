@@ -5,14 +5,26 @@
     margin-left: 1rem;
     margin-right: 1rem;
     margin-bottom: 1rem;
-    border-radius: 6px;
-    border-radius: 50%;
+    /* border-radius: 6px;
+    border-radius: 100%;*/
+    transition: transform 0.3s ease-in-out; /* Add transition for smooth scaling */
+}
+
+.profile-index {
+    border-style: solid;
+    border-color: $light-gray;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    /* border-radius: 6px;
+    border-radius: 100%; */
     transition: transform 0.3s ease-in-out; /* Add transition for smooth scaling */
 }
 
 .profile-image {
    width: 100%;
-   transition: opacity 0.3s ease-in-out; /* Add transition for smooth image change */
+   height: 100%;
+   transition: opacity 0.9s ease-in-out; /* Add transition for smooth image change */
  }
 
  .hover-image {
@@ -25,7 +37,7 @@
  }
 
  .profile-container:hover .profile-image {
-   opacity: 0; /* Hide the profile image on hover */
+   opacity: 0.1; /* Hide the profile image on hover */
  }
 
  .profile-container:hover .hover-image {
@@ -40,9 +52,19 @@
     float: right;
 }
 
+.center {
+    float: center;
+    height: 50%;
+    margin-left: 15rem;
+    margin-right: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    border-radius: 5%;
+    
+}
 // Add hover effect
 .profile:hover {
-    transform: scale(1.1); /* Increase the scale on hover */
+    transform: scale(0.8); /* Increase the scale on hover */
 }
 
 // Adjust tile sizes on smaller screens
@@ -53,7 +75,6 @@
         }
     }
 }
-
 
 /* Profile 
 .profile {
