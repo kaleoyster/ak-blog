@@ -44,9 +44,9 @@ collections:
   projects:
     output: true
     permalink: /projects/:path/
-  resumes:
+  research:
     output: true
-    permalink: /resumes/:path/
+    permalink: /research/:path/
 
 sass:
   sass_dir: /assets/css/_sass
