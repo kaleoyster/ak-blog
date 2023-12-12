@@ -5,14 +5,14 @@ title: Resume
 
 ### Journal Papers
 [A Comparative Assessment of Bridge Deck Wearing Surfaces: Performance, Deterioration, and Maintenance](https://www.mdpi.com/2076-3417/13/19/10883)
-   - Authors: A Kale, Y Kassa, B Ricks, R Gandhi
+   - Authors: **A Kale**, Y Kassa, B Ricks, R Gandhi
    - Journal: Applied Sciences
    - Volume: 13 (19)
    - Pages: 10883
    - Year: 2023
 
 [New Measure to Understand and Compare Bridge Conditions Based on Inspections Time-Series Data](https://ascelibrary.org/doi/full/10.1061/%28ASCE%29IS.1943-555X.0000633)
-   - Authors: A Kale, B Ricks, R Gandhi
+   - Authors: **A Kale**, B Ricks, R Gandhi
    - Journal: Journal of Infrastructure Systems
    - Volume: 27 (4)
    - Pages: 04021037
@@ -20,10 +20,10 @@ title: Resume
 
 ### Conference Papers
 [Toward Interactive Visualizations for Explaining Machine Learning Models](http://idl.iscram.org/files/ramsey/2023/2570_Ramsey_etal2023.pdf)
-   - Authors: A Ramsey, A Kale, Y Kassa, R Gandhi, B Ricks
+   - Authors: A Ramsey, **A Kale**, Y Kassa, R Gandhi, B Ricks
    - Year: 2023
    - [Interactive heatmap by Ashley Ramsay](https://repairs.ricks.io/tree.html?state=IL&features=designatedInspectionFrequency&repair=substructure&eg=Entropy
-)
+   - [Interactive 2D Matrix by Ashley Ramsay](https://repairs.ricks.io/twoFeatureMatrix.html)
 
 ### Poster
 [How to Select Simple-Yet-Accurate Model of Bridge Maintenance?](https://digitalcommons.unomaha.edu/cgi/viewcontent.cgi?article=1067&context=isqafacproc)
