@@ -50,4 +50,3 @@ title: Resume
 [Identifying Predictors of Bridge Deterioration in the United States from a Data Science Perspective](https://www.proquest.com/docview/2218468585?pq-origsite=gscholar&fromopenview=true)
    - Author: A Kale
    - University: University of Nebraska at Omaha
-
