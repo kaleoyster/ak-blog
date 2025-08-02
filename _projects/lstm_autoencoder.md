@@ -70,14 +70,11 @@ python3 src/lstm_autoencoder.py
 ```
 
 #### Alternatively, run bash script 
-
 ```zsh
 ./run_lstm.sh
 ```
 
 #### View visualization
-
 ```zsh
 Serving HTTP on :: port 8000 (http://[localhost]:8000/) ...
 ```
-

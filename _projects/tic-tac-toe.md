@@ -4,9 +4,9 @@ title: Tic-Tac-Toe
 description: A Q-learning program to play tic-tac-toe
 date: 2017-08-08
 ---
+
 <h2 align='center'>
         A Q-learning program to play tic-tac-toe
-
 </h2>
 
 ### Preview
