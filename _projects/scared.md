@@ -11,6 +11,9 @@ date: 2025-11-20
 
 [Link to the Github Project](https://github.com/kaleoyster/scared-network){:target="_blank", style="align:center"}
 
+[Link to the Analysis](https://kaleoyster.github.io/scared/)
+{:target="_blank", style="align:center"}
+
 - **Big idea** — Traditional psychological scoring methods collapse symptoms into a single number, losing the *relationships* between symptoms and the *discrepancies* between child and parent reports.
 - **Small idea** — Network analysis treats each symptom as a node and the relationships between symptoms as edges, allowing us to detect central, influential, or bridging symptoms in child–parent pairs.
 - **Bird’s eye view of the idea** — By modeling the SCARED questionnaire responses as a symptom network, we can quantify hubs, clusters, and pathways of anxiety — and compare how children and parents perceive them differently.
