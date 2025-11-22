@@ -7,7 +7,7 @@ date: 2023-12-10
 
 # fairalgo
 <h2 align='center'>
-   Understanding the effect of changing values of sensitive variables on fariness metrics
+   Understanding the effect of changing values of sensitive variables on fairness metrics
 </h2>
 
 ### 🎯 Objective
