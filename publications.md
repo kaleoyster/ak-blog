@@ -34,7 +34,7 @@ title: Resume
    - Authors: A Wissing, B Ricks, R Gandhi, Y Kassa, A Kale
    - Year: 2023
 
-[Building Interpretable Methods For Identifying Bridge Maintenance Patterns*](https://digitalcommons.unomaha.edu/srcaf/2022/schedule/116/)
+[Building Interpretable Methods For Identifying Bridge Maintenance Patterns](https://digitalcommons.unomaha.edu/srcaf/2022/schedule/116/)
    - Author: A Kale
    - Year: 2022
 
@@ -42,7 +42,7 @@ title: Resume
    - Authors: A Kale, D Abeyrathna
    - Year: 2020
 
-[Understanding the Effects of Precipitation on Bridge Health in the US*](https://digitalcommons.unomaha.edu/srcaf/2019/Schedule/139/)
+[Understanding the Effects of Precipitation on Bridge Health in the US](https://digitalcommons.unomaha.edu/srcaf/2019/Schedule/139/)
    - Author: A Kale
    - Year: 2019
 

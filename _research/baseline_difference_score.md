@@ -9,4 +9,4 @@ date: 2021-02-26
 </h2>
 
 ![Baseline difference score](../images/bds-poster.png){:target='Apple', height:50, style='align:center'}
-**Baseline difference score used to evaluate the performance of bridges across the U.S.**
+**Baseline difference score used to evaluate the performance of bridges across the U.S**
