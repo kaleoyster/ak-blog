@@ -22,7 +22,7 @@ title: Resume
 [Toward Interactive Visualizations for Explaining Machine Learning Models](http://idl.iscram.org/files/ramsey/2023/2570_Ramsey_etal2023.pdf)
    - Authors: A Ramsey, **A Kale**, Y Kassa, R Gandhi, B Ricks
    - Year: 2023
-   - [Interactive heatmap by Ashley Ramsay](https://repairs.ricks.io/tree.html?state=IL&features=designatedInspectionFrequency&repair=substructure&eg=Entropy
+   - [Interactive heatmap by Ashley Ramsay](https://repairs.ricks.io/tree.html?state=IL&features=designatedInspectionFrequency&repair=substructure&eg=Entropy)
    - [Interactive 2D Matrix by Ashley Ramsay](https://repairs.ricks.io/twoFeatureMatrix.html)
 
 ### Poster
