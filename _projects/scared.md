@@ -1,8 +1,25 @@
 ---
+
 layout: post
 title: SCARED — Child–Parent Symptom Network Analysis
 description: Network-based modeling to understand child–parent discrepancies in anxiety symptoms.
 date: 2025-11-20
+<!-- TODO: 
+- Add real arc diagram visualization before publication.
+    - Arc Diagram - Network
+        - Regularized Partial Correlation Symptoms Network
+    - Scatter Plots - Scatter plot  - Child vs. Parent (Discrepancy) -> Regression
+    - Barchart - Median Score by Disorder and Reporters
+    - Box Plots  -  Score Distribution by discorder and Reporter
+    - Example of the
+- Fill in more detailed findings after final analysis.
+- Double-check stats for nodes/edges with updated dataset.
+- Review centrality metric explanations for clarity.
+- Add downloadable data/code links if possible.
+(This section is hidden from rendered page)
+
+-->
+
 ---
 
 <h2 align='center'>
@@ -10,8 +27,8 @@ date: 2025-11-20
 </h2>
 
 [Link to the Github Project](https://github.com/kaleoyster/scared-network){:target="_blank", style="align:center"}
-
 [Link to the Analysis](https://kaleoyster.github.io/scared/)
+
 {:target="_blank", style="align:center"}
 
 - **Big idea** — Traditional psychological scoring methods collapse symptoms into a single number, losing the *relationships* between symptoms and the *discrepancies* between child and parent reports.
@@ -19,17 +36,16 @@ date: 2025-11-20
 - **Bird’s eye view of the idea** — By modeling the SCARED questionnaire responses as a symptom network, we can quantify hubs, clusters, and pathways of anxiety — and compare how children and parents perceive them differently.
 - **Technical details** — This project uses **Graph Theory**, **Centrality Metrics (degree, betweenness, closeness, eigenvector)**, **community detection**, and **arc diagram visualization** to map 41 symptoms and 451 edges from a sample of 31 child–parent dyads.
 - **What’s next** — These networks can guide future clinical interpretation, automated discrepancy detection, and targeted interventions focused on the most influential symptoms.
-
 ---
 
 ### 📊 Network Metrics Summary
 
 | Metric              | Meaning                                                                 |
 |--------------------|--------------------------------------------------------------------------|
-| **Degree centrality** | How many symptoms a given symptom is directly connected to.             |
-| **Betweenness**       | How often a symptom lies on the shortest path between other symptoms.  |
-| **Closeness**         | How near a symptom is—on average—to all other symptoms.                |
-| **Eigenvector**       | Influence: a symptom connected to other highly influential symptoms.   |
+| **Degree centrality** | How many symptoms a given symptom is directly connected to.           |
+| **Betweenness**       | How often a symptom lies on the shortest path between other symptoms. |
+| **Closeness**         | How near a symptom is—on average—to all other symptoms.               |
+| **Eigenvector**       | Influence: a symptom connected to other highly influential symptoms.  |
 
 ---
 
@@ -45,6 +61,7 @@ date: 2025-11-20
 
 ---
 
+
 ### 🌀 Preview (Mock Arc Diagram)
 
 > *Arc diagram preview placeholder — visualization shows symptom clusters by subscale, with children displaying more dispersed connections than parents.*
@@ -55,7 +72,6 @@ date: 2025-11-20
 ---
 
 ### 🎯 Objective
-
 - Understand the **structure of anxiety symptoms** in children using a network science lens  
 - Compare **child vs. parent symptom networks** to identify discrepancy patterns  
 - Use network metrics to identify **core, influential, or bridging symptoms**  
