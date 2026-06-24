@@ -1,0 +1,45 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+  <article>
+    <header class="mb-8">
+      <h1 class="text-2xl font-bold mb-2">{project.data.title}</h1>
+      {project.data.description && (
+        <p class="text-zinc-500 dark:text-zinc-400">{project.data.description}</p>
+      )}
+      <div class="flex gap-3 mt-4 text-sm">
+        {project.data.github && (
+          <a href={project.data.github} target="_blank" rel="noopener noreferrer"
+             class="text-blue-600 dark:text-blue-400 hover:underline">
+            GitHub →
+          </a>
+        )}
+        {project.data.demo && (
+          <a href={project.data.demo} target="_blank" rel="noopener noreferrer"
+             class="text-blue-600 dark:text-blue-400 hover:underline">
+            Live Demo →
+          </a>
+        )}
+      </div>
+    </header>
+    <div class="prose dark:prose-invert">
+      <Content />
+    </div>
+    <div class="mt-10">
+      <a href="/#projects" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+        ← Back to Projects
+      </a>
+    </div>
+  </article>
+</BaseLayout>

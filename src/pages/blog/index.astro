@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('posts'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
+
+const fmt = (d?: Date) =>
+  d ? d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+---
+
+<BaseLayout title="Writing" description="Posts and notes by Akshay Kale.">
+  <a href="/#writing" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
+  <h1 class="text-2xl font-bold mt-3 mb-8">Writing</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {posts.map((post) => (
+      <a href={`/blog/${post.id}`} class="card-live group block border border-zinc-200 dark:border-zinc-700 rounded-xl p-5">
+        <h2 class="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{post.data.title}</h2>
+        {post.data.description && <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-snug mt-1">{post.data.description}</p>}
+        {post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            {post.data.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+        {post.data.date && <p class="text-xs text-zinc-400 dark:text-zinc-600 mt-3">{fmt(post.data.date)}</p>}
+      </a>
+    ))}
+  </div>
+</BaseLayout>
