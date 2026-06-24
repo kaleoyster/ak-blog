@@ -5,7 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 
 export default defineConfig({
-  site: 'https://ak-blog.vercel.app',
+  site: 'https://kaleoyster.github.io',
+  base: '/ak-blog',
   vite: {
     plugins: [tailwindcss()],
   },
