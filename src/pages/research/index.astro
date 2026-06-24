@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const research = (await getCollection('research')).sort(
+  (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0)
+);
+
+const fmt = (d?: Date) =>
+  d ? d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '';
+---
+
+<BaseLayout title="Research" description="Research notes and methods by Akshay Kale.">
+  <a href="/#research" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
+  <h1 class="text-2xl font-bold mt-3 mb-8">Research Notes</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {research.map((item) => (
+      <a
+        href={`/research/${item.id}`}
+        class="card-live group block border border-zinc-200 dark:border-zinc-700 rounded-xl p-5"
+      >
+        <h2 class="font-semibold mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.data.title}</h2>
+        {item.data.description && <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">{item.data.description}</p>}
+        {item.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            {item.data.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+        {item.data.date && <p class="text-xs text-zinc-400 dark:text-zinc-600 mt-3">{fmt(item.data.date)}</p>}
+      </a>
+    ))}
+  </div>
+</BaseLayout>

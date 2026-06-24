@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const collection = (await getCollection('projects')).sort(
+  (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0)
+);
+
+// Collection-backed projects, plus standalone/external ones not in the collection.
+const cards = [
+  { title: 'SCARED — Symptom Network Analysis', desc: 'Child–parent symptom network analysis of childhood anxiety, with an interactive arc-diagram visualization.', href: '/projects/scared', tags: ['Visualization', 'Networks'] },
+  ...collection.map((p) => ({ title: p.data.title, desc: p.data.description ?? '', href: `/projects/${p.id}`, tags: p.data.tags ?? [] })),
+  { title: 'CoRA', desc: 'Interactive Forced Directed Network Graph to identify fallen World War II soldiers from their remains.', href: 'https://github.com/kaleoyster', external: true, tags: ['Visualization', 'D3.js'] },
+];
+
+const allTags = Array.from(new Set(cards.flatMap((c) => c.tags))).sort();
+---
+
+<BaseLayout title="Projects" description="Projects by Akshay Kale across machine learning, data science, and visualization.">
+  <a href="/#projects" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
+  <h1 class="text-2xl font-bold mt-3 mb-5">Projects</h1>
+
+  <!-- Filter chips -->
+  <div id="project-filters" class="flex flex-wrap gap-2 mb-6">
+    <button class="filter-chip" data-filter="all" aria-pressed="true">All</button>
+    {allTags.map((t) => (
+      <button class="filter-chip" data-filter={t} aria-pressed="false">{t}</button>
+    ))}
+  </div>
+
+  <div id="project-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {cards.map((c) => (
+      <a
+        href={c.href}
+        target={(c as any).external ? '_blank' : undefined}
+        rel="noopener noreferrer"
+        data-tags={c.tags.join('|')}
+        class="project-card card-live group block border border-zinc-200 dark:border-zinc-700 rounded-xl p-5"
+      >
+        <h2 class="font-semibold mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          {c.title} {(c as any).external && <span class="text-xs">↗</span>}
+        </h2>
+        {c.desc && <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">{c.desc}</p>}
+        {c.tags.length > 0 && (
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            {c.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
+
+  <p id="no-results" class="hidden text-sm text-zinc-400 dark:text-zinc-500 mt-6">No projects match that filter.</p>
+</BaseLayout>
+
+<script>
+  function initProjectFilters() {
+    const filterBar = document.getElementById('project-filters');
+    if (!filterBar) return;
+    const chips = Array.from(filterBar.querySelectorAll<HTMLButtonElement>('.filter-chip'));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.project-card'));
+    const noResults = document.getElementById('no-results');
+
+    const apply = (filter: string) => {
+      let shown = 0;
+      cards.forEach((card) => {
+        const tags = (card.dataset.tags || '').split('|');
+        const match = filter === 'all' || tags.includes(filter);
+        card.classList.toggle('card-filtered', !match);
+        if (match) shown++;
+      });
+      if (noResults) noResults.classList.toggle('hidden', shown > 0);
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        apply(chip.dataset.filter || 'all');
+      });
+    });
+  }
+  initProjectFilters();
+  document.addEventListener('astro:after-swap', initProjectFilters);
+</script>

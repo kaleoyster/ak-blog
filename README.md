@@ -1,33 +1,43 @@
-# Gradfolio
+# Astro Starter Kit: Minimal
 
-responsive, dark-mode ready Jekyll theme designed for use as a personal website and portfolio. [Here's a live demo](https://jitinnair1.github.io/gradfolio/)
+```sh
+npm create astro@latest -- --template minimal
+```
 
-## Features
-- Responsive
-- Respects Dark Mode preference set by user
-- Projects Page to showcase your work/side projects
-- Easily link to your profiles on ResearchGate and ORCID
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-## Installation
-* Click on `Use this template`
-* Your new site should be ready at https://username.github.io/gradfolio/
-* You can now modify the contents and personalise the template
+## 🚀 Project Structure
 
-Alternatively, you can [download the source files](https://github.com/jitinnair1/gradfolio/archive/master.zip) and make changes locally. 
+Inside of your Astro project, you'll see the following folders and files:
 
-To test these changes, open a terminal inside the source folder and use `jekyll serve --incremental --trace` to make it available on a local server (typically http://localhost:4000/)
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
 
-The `--incremental` flag ensures that any changes you make are reflected in your browser in real time and the `--trace` option might be useful for debugging if things break while you are changing the source files.
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-Once you have personalised and tested the site, you can create a new repo, upload these files and host your website from the repo.
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-## Based on
-- [hagura](https://github.com/sharu725/hagura)
-- [al-folio](https://github.com/alshedivat/al-folio)
-- [noir](https://github.com/essentialenemy/noir)
-- [jekyll-TeXt-theme](https://github.com/kitian616/jekyll-TeXt-theme)
+Any static assets, like images, can be placed in the `public/` directory.
 
-## License
-MIT License
+## 🧞 Commands
 
-[![JekyllThemes](https://img.shields.io/badge/featured%20on-JekyllThemes-red.svg)](https://jekyll-themes.com)
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const research = await getCollection('research');
+  return research.map((item) => ({ params: { id: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<BaseLayout title={item.data.title} description={item.data.description}>
+  <article>
+    <header class="mb-8">
+      <h1 class="text-2xl font-bold mb-2">{item.data.title}</h1>
+      {item.data.description && (
+        <p class="text-zinc-500 dark:text-zinc-400">{item.data.description}</p>
+      )}
+      {item.data.date && (
+        <p class="text-xs text-zinc-400 dark:text-zinc-600 mt-2">
+          {item.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
+        </p>
+      )}
+    </header>
+    <div class="prose dark:prose-invert">
+      <Content />
+    </div>
+    <div class="mt-10">
+      <a href="/#research" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+        ← Back to Research
+      </a>
+    </div>
+  </article>
+</BaseLayout>

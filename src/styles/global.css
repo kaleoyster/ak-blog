@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* Class-based dark mode so the toggle can override system preference */
+@variant dark (&:where(.dark, .dark *));
+
+/* ---- Interactive cards (listing pages) ---- */
+.card-live {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card-live::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 130, 246, 0.13), transparent 60%);
+  transition: opacity 0.2s ease;
+}
+.card-live:hover::before { opacity: 1; }
+.card-live:hover {
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, 0.5) !important;
+  box-shadow: 0 14px 32px -18px rgba(59, 130, 246, 0.45);
+}
+.dark .card-live::before {
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(96, 165, 250, 0.16), transparent 60%);
+}
+
+/* ---- Tag chips ---- */
+.tag {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  color: rgb(99 102 241);
+  background: rgba(99, 102, 241, 0.1);
+}
+.dark .tag {
+  color: rgb(165 180 252);
+  background: rgba(129, 140, 248, 0.16);
+}
+
+/* ---- Filter chips ---- */
+.filter-chip {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgb(82 82 91);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.filter-chip:hover { border-color: rgba(99, 102, 241, 0.5); }
+.filter-chip[aria-pressed="true"] {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+}
+.dark .filter-chip {
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgb(212 212 216);
+}
+.card-filtered { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-live, .card-live::before { transition: none; }
+  .card-live:hover { transform: none; }
+}
+
+/* ---- Command palette (⌘K) ---- */
+.cmdk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 12vh;
+  background: rgba(9, 9, 11, 0.45);
+  backdrop-filter: blur(3px);
+}
+.cmdk-overlay[hidden] { display: none; }
+.cmdk-panel {
+  width: min(92vw, 560px);
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.9rem;
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: cmdk-in 0.14s ease;
+}
+.dark .cmdk-panel {
+  background: #18181b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+@keyframes cmdk-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.cmdk-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+.dark .cmdk-input-row { border-color: rgba(255, 255, 255, 0.08); }
+.cmdk-input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 0.95rem;
+  color: inherit;
+}
+.cmdk-results {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem;
+  overflow-y: auto;
+}
+.cmdk-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.cmdk-item.is-active {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.12));
+}
+.cmdk-title { font-size: 0.875rem; font-weight: 500; }
+.cmdk-kind {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(99 102 241);
+  background: rgba(99, 102, 241, 0.1);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.dark .cmdk-kind { color: rgb(165 180 252); background: rgba(129, 140, 248, 0.16); }
+.cmdk-hint {
+  display: flex;
+  gap: 1rem;
+  padding: 0.55rem 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  font-size: 0.68rem;
+  color: rgb(161 161 170);
+}
+.dark .cmdk-hint { border-color: rgba(255, 255, 255, 0.08); }
+@media (prefers-reduced-motion: reduce) {
+  .cmdk-panel { animation: none; }
+}

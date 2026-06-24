@@ -1,0 +1,741 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const byDate = (a: any, b: any) =>
+  (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0);
+
+const projectEntries = await getCollection('projects');
+const researchEntries = (await getCollection('research')).sort(byDate);
+const postEntries = (await getCollection('posts'))
+  .filter((p) => !p.data.draft)
+  .sort(byDate);
+
+const fmt = (d?: Date) =>
+  d ? d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '';
+
+// Short teaser pulled from each entry's markdown — the expanded panel is a
+// preview, not the whole page.
+function excerpt(md: string | undefined, max = 300) {
+  let t = (md || '')
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/[*_`>#|]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (t.length > max) t = t.slice(0, max).replace(/\s+\S*$/, '') + '…';
+  return t;
+}
+
+const meta: Record<string, { excerpt: string; github?: string; demo?: string; minutes: number }> = {};
+for (const e of [...projectEntries, ...researchEntries, ...postEntries]) {
+  const words = (e.body || '').trim().split(/\s+/).filter(Boolean).length;
+  meta[`${e.collection}/${e.id}`] = {
+    excerpt: excerpt(e.body),
+    github: (e.data as any).github,
+    demo: (e.data as any).demo,
+    minutes: Math.max(1, Math.round(words / 200)),
+  };
+}
+
+const contacts = [
+  { label: 'linkedin/akshaykale1', href: 'https://linkedin.com/in/akshaykale1' },
+  { label: 'akshaykale/blog', href: 'https://github.com/kaleoyster' },
+  { label: 'github.com/kaleoyster', href: 'https://github.com/kaleoyster' },
+  { label: 'akshaykale4@icloud.com', href: 'mailto:akshaykale4@icloud.com' },
+  { label: '+1 (402) 510 0497', href: 'tel:+14025100497' },
+];
+
+const education = [
+  { degree: 'Ph.D.', field: 'Artificial Intelligence, UNO', period: 'August 2019 – May 2024' },
+  { degree: 'Master of Science', field: 'Computer Science, UNO', period: 'August 2016 – May 2019' },
+];
+
+const skills = [
+  { group: 'Languages', items: ['Python', 'R', 'Java', 'JavaScript', 'MLflow', 'LaTeX', 'C'] },
+  { group: 'Tools and Frameworks', items: ['SkLearn', 'PyTorch', 'Keras / Tensorflow', 'GGplot', 'Plotly', 'Seaborn', 'SQL', 'MongoDB', 'Matplotlib', 'Git', 'Unix', 'Vim', 'Jupyter Notebook'] },
+];
+
+const coursework = [
+  'Deep Learning', 'Statistical and Machine Learning', 'Data Structures and Algorithms',
+  'Statistics', 'Data Storytelling', 'Database Management',
+];
+
+const awards = [
+  'Best Visualization, Datapalooza 2019',
+  'Best Speaker, PIIT, India',
+  'Research Scholarship, UNO',
+  'Advantage Scholarship, UNO',
+];
+
+const summary = [
+  '5+ years of experience in machine learning modeling with publications',
+  'Academic research focused on explainable artificial intelligence',
+  'Ph.D. in Artificial Intelligence, completed May 2024',
+];
+
+const experience = [
+  {
+    role: 'Machine Learning Engineer',
+    org: 'University of Nebraska (UNO)',
+    period: 'January 2017 – May 2024',
+    points: [
+      'Trained machine learning models with 98% accuracy, an improvement by 10% in comparison to state-of-the-art, in structural health monitoring',
+      'Collaborated with engineers, bridge managers, and researchers to develop and implement machine learning and deep learning models for prediction of bridge maintenance, resulting in 3 research publications and other ongoing work',
+      'Created web crawlers for scraping environment, population, and inspection records resulting in a collection of over 21 million records',
+      'Communicated results analysis through interactive visualizations, written reports, publications, and presentations',
+    ],
+  },
+];
+
+const projects = [
+  {
+    name: 'Frame-forecast',
+    stack: 'Deep Learning | TensorFlow | Python',
+    desc: 'Trained a Deep Learning AutoEncoder to predict the future sequence of frames in a public moving MNIST dataset of over 1,000 images with 95% accuracy',
+    entry: 'projects/frame-forecast',
+    page: '/projects/frame-forecast',
+  },
+  {
+    name: 'CoRA',
+    stack: 'Data Science | D3.js | JavaScript',
+    desc: 'Developed an interactive Forced Directed Network Graph visualization to identify fallen World War II soldiers from their remains',
+    link: 'https://github.com/kaleoyster',
+  },
+  {
+    name: 'Tic-Tac-Toe',
+    stack: 'Reinforcement Learning | Q-Learning | Python',
+    desc: 'A Q-Learning program that improves at playing tic-tac-toe as it plays with a human',
+    entry: 'projects/tic-tac-toe',
+    page: '/projects/tic-tac-toe',
+  },
+];
+
+const publications = [
+  {
+    cite: 'Ramsey A, <u>Kale A</u>, Kassa Y, Ricks B, Gandhi R. <em>Toward Interactive Visualizations for Explaining Machine Learning Models.</em> Proceedings of the Information Systems for Crisis Response and Management Conference, Omaha, NE, USA. 2023.',
+    href: 'http://idl.iscram.org/files/ramsey/2023/2570_Ramsey_etal2023.pdf',
+  },
+  {
+    cite: '<u>Kale A</u>, Kassa Y, Ricks B, Gandhi R. <em>A Comparative Assessment of Bridge Deck Wearing Surfaces: Performance, Deterioration, and Maintenance.</em> Applied Sciences. 2023; 13(19):10883.',
+    href: 'https://www.mdpi.com/2076-3417/13/19/10883',
+  },
+  {
+    cite: '<u>Kale A</u>, Ricks B, and Gandhi R. <em>New measure to understand and compare bridge conditions based on inspections time-series data.</em> Journal of Infrastructure Systems 27.4 (2021): 04021037.',
+    href: 'https://ascelibrary.org/doi/full/10.1061/%28ASCE%29IS.1943-555X.0000633',
+  },
+];
+---
+
+<BaseLayout title="Akshay Kale" description="Artificial Intelligence | Data Science | Research">
+  <!-- Masthead -->
+  <header class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-6 border-b border-zinc-200 dark:border-zinc-700">
+    <div>
+      <h1 class="name-shine font-display text-4xl sm:text-5xl font-semibold tracking-tight">Akshay Kale</h1>
+      <p class="mt-1 text-lg sm:text-xl font-light text-zinc-600 dark:text-zinc-300">
+        Artificial Intelligence <span class="text-zinc-300 dark:text-zinc-600">|</span> Data Science <span class="text-zinc-300 dark:text-zinc-600">|</span> Research
+      </p>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <a href="/pdf/Akshay_Kale_Resume.pdf" target="_blank" rel="noopener noreferrer" class="dl-btn">
+          Résumé <span aria-hidden="true">↓</span>
+        </a>
+        <a href="/pdf/Akshay_Kale_CV.pdf" target="_blank" rel="noopener noreferrer" class="dl-btn">
+          CV <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </div>
+    <ul class="text-sm text-zinc-500 dark:text-zinc-400 sm:text-right space-y-0.5">
+      {contacts.map((c) => (
+        <li>
+          <a href={c.href} target="_blank" rel="noopener noreferrer" class="contact-link relative hover:text-zinc-900 dark:hover:text-white transition-colors">{c.label}</a>
+        </li>
+      ))}
+    </ul>
+  </header>
+
+  <!-- Two-column resume body -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-10 gap-y-10 mt-8">
+    <!-- Left column -->
+    <aside class="sm:col-span-1 space-y-8">
+      <section class="sec">
+        <h2 class="resume-h">Education</h2>
+        <ul class="space-y-4">
+          {education.map((e) => (
+            <li>
+              <p class="font-bold">{e.degree}</p>
+              <p class="resume-caps text-sm text-zinc-600 dark:text-zinc-300">{e.field}</p>
+              <p class="text-sm text-zinc-500 dark:text-zinc-400">{e.period}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="skills" class="sec scroll-mt-20">
+        <h2 class="resume-h">Skills</h2>
+        <div class="space-y-4">
+          {skills.map((s) => (
+            <div>
+              <p class="font-bold text-sm">{s.group}</p>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                {s.items.map((item, i) => (
+                  <>
+                    {i > 0 && <span class="text-zinc-300 dark:text-zinc-600"> · </span>}
+                    <span class="skill hover:text-zinc-900 dark:hover:text-white transition-colors">{item}</span>
+                  </>
+                ))}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2 class="resume-h">Coursework</h2>
+        <p class="font-bold text-sm mb-1">Graduate</p>
+        <ul class="text-sm text-zinc-600 dark:text-zinc-400 space-y-0.5">
+          {coursework.map((c) => <li><span class="skill hover:text-zinc-900 dark:hover:text-white transition-colors">{c}</span></li>)}
+        </ul>
+      </section>
+
+      <section class="sec">
+        <h2 class="resume-h">Awards</h2>
+        <ul class="text-sm text-zinc-600 dark:text-zinc-400 space-y-0.5">
+          {awards.map((a) => <li><span class="skill hover:text-zinc-900 dark:hover:text-white transition-colors">{a}</span></li>)}
+        </ul>
+      </section>
+    </aside>
+
+    <!-- Right column -->
+    <div class="sm:col-span-2 space-y-10">
+      <section id="summary" class="sec scroll-mt-20">
+        <h2 class="resume-h">Summary</h2>
+        <ul class="resume-list">
+          {summary.map((s) => <li>{s}</li>)}
+        </ul>
+      </section>
+
+      <section id="experience" class="sec scroll-mt-20">
+        <h2 class="resume-h">Transferable Skill</h2>
+        {experience.map((job) => (
+          <div>
+            <p class="font-bold">{job.role} <span class="resume-caps font-semibold text-zinc-500 dark:text-zinc-400">– {job.org}</span></p>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{job.period}</p>
+            <ul class="resume-list">
+              {job.points.map((p) => <li>{p}</li>)}
+            </ul>
+          </div>
+        ))}
+      </section>
+
+      <section id="projects" class="sec scroll-mt-20">
+        <a href="/projects" class="resume-h rh-link">Selected Projects<span class="rh-arrow">→</span></a>
+        <div class="space-y-5">
+          {projects.map((p) => {
+            const info = p.entry ? meta[p.entry] : null;
+            if (!info) {
+              return (
+                <a href={p.link} target="_blank" rel="noopener noreferrer" class="live group block">
+                  <span class="live-arrow">↗</span>
+                  <p class="font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{p.name}</p>
+                  <p class="resume-caps text-sm text-zinc-500 dark:text-zinc-400">{p.stack}</p>
+                  <ul class="resume-list mt-1"><li>{p.desc}</li></ul>
+                </a>
+              );
+            }
+            return (
+              <div class="expandable">
+                <button type="button" aria-expanded="false" class="exp-trigger live group block w-full text-left">
+                  <span class="exp-icon">+</span>
+                  <p class="font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{p.name}</p>
+                  <p class="resume-caps text-sm text-zinc-500 dark:text-zinc-400">{p.stack}</p>
+                  <ul class="resume-list mt-1"><li>{p.desc}</li></ul>
+                </button>
+                <div class="exp-panel"><div class="exp-inner">
+                  <p class="exp-excerpt">{info.excerpt}</p>
+                  <div class="exp-actions">
+                    {info.github && <a class="exp-btn" href={info.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}
+                    {info.demo && <a class="exp-btn" href={info.demo} target="_blank" rel="noopener noreferrer">Live demo ↗</a>}
+                    <a class="exp-btn exp-btn-primary" href={p.page}>Open full page →</a>
+                  </div>
+                </div></div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Publications onward: full-width single column -->
+  <div class="space-y-10 mt-10">
+      <section id="publications" class="sec scroll-mt-20">
+        <a href="/publications" class="resume-h rh-link">Top Three Publications<span class="rh-arrow">→</span></a>
+        <div class="space-y-4">
+          {publications.map((p) => (
+            <a href={p.href} target="_blank" rel="noopener noreferrer" class="live group block">
+              <span class="live-arrow">↗</span>
+              <p class="relative pl-4 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                <span class="resume-bullet"></span>
+                <span set:html={p.cite}></span>
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {researchEntries.length > 0 && (
+        <section id="research" class="sec scroll-mt-20">
+          <a href="/research" class="resume-h rh-link">Research Notes<span class="rh-arrow">→</span></a>
+          <div class="space-y-3">
+            {researchEntries.map((item) => {
+              const info = meta[`research/${item.id}`];
+              return (
+                <div class="expandable">
+                  <button type="button" aria-expanded="false" class="exp-trigger live group block w-full text-left">
+                    <span class="exp-icon">+</span>
+                    <p class="font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.data.title}</p>
+                    {item.data.description && (
+                      <p class="text-sm text-zinc-500 dark:text-zinc-400">{item.data.description}</p>
+                    )}
+                  </button>
+                  <div class="exp-panel"><div class="exp-inner">
+                    <p class="exp-excerpt">{info.excerpt}</p>
+                    <div class="exp-actions">
+                      <a class="exp-btn exp-btn-primary" href={`/research/${item.id}`}>Open full page →</a>
+                    </div>
+                  </div></div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {postEntries.length > 0 && (
+        <section id="writing" class="sec scroll-mt-20">
+          <a href="/blog" class="resume-h rh-link">Writing<span class="rh-arrow">→</span></a>
+          <div class="space-y-3">
+            {postEntries.map((post) => {
+              const info = meta[`posts/${post.id}`];
+              return (
+                <div class="expandable">
+                  <button type="button" aria-expanded="false" class="exp-trigger live group block w-full text-left">
+                    <span class="exp-icon">+</span>
+                    <div class="flex items-baseline justify-between gap-3">
+                      <p class="font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{post.data.title}</p>
+                      <span class="shrink-0 text-xs text-zinc-400 dark:text-zinc-500">{fmt(post.data.date)}</span>
+                    </div>
+                    {post.data.description && (
+                      <p class="text-sm text-zinc-500 dark:text-zinc-400">{post.data.description}</p>
+                    )}
+                  </button>
+                  <div class="exp-panel"><div class="exp-inner">
+                    <p class="exp-excerpt">{info.excerpt}</p>
+                    <div class="exp-actions">
+                      <span class="exp-meta">{info.minutes} min read</span>
+                      <a class="exp-btn exp-btn-primary" href={`/blog/${post.id}`}>Read post →</a>
+                    </div>
+                  </div></div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+  </div>
+</BaseLayout>
+
+<style>
+  @reference "../styles/global.css";
+
+  .resume-h {
+    @apply inline-block relative text-lg font-bold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-3;
+  }
+  /* gradient underline that grows when the section is hovered */
+  .resume-h::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sec:hover .resume-h::after {
+    transform: scaleX(1);
+  }
+  /* section titles that link to a full "view all" page */
+  .rh-link {
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .rh-arrow {
+    display: inline-block;
+    margin-left: 0.4rem;
+    font-size: 0.8em;
+    color: rgb(99 102 241);
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .rh-link:hover .rh-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .resume-caps {
+    font-variant-caps: small-caps;
+    letter-spacing: 0.02em;
+  }
+
+  .resume-list {
+    @apply space-y-1.5;
+  }
+  .resume-list > li,
+  .resume-bullet {
+    @apply text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed;
+  }
+  .resume-list > li {
+    @apply relative pl-4;
+  }
+  .resume-list > li::before,
+  .resume-bullet::before {
+    content: "";
+    @apply absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500;
+  }
+  .resume-bullet::before {
+    left: 0;
+    top: 0.5rem;
+  }
+
+  /* Live hover cards — resting state is identical; bg layer is absolute so nothing reflows */
+  .live {
+    position: relative;
+    border-radius: 0.6rem;
+    transition: transform 0.18s ease;
+  }
+  .live::before {
+    content: "";
+    position: absolute;
+    inset: -0.55rem -0.8rem;
+    border-radius: 0.7rem;
+    background: transparent;
+    transition: opacity 0.2s ease, box-shadow 0.25s ease;
+    opacity: 0;
+    /* cursor-following spotlight blended over a neutral tint */
+    background:
+      radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 130, 246, 0.14), transparent 60%),
+      rgba(24, 24, 27, 0.05);
+    z-index: -1;
+  }
+  .live:hover::before {
+    opacity: 1;
+    box-shadow: 0 6px 20px -10px rgba(59, 130, 246, 0.35);
+  }
+  :global(.dark) .live::before {
+    background:
+      radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(96, 165, 250, 0.16), transparent 60%),
+      rgba(255, 255, 255, 0.05);
+  }
+  .live:hover {
+    transform: translateX(4px);
+  }
+  .live-arrow {
+    position: absolute;
+    top: -0.35rem;
+    right: -0.45rem;
+    font-size: 0.95rem;
+    line-height: 1;
+    color: rgb(37 99 235);
+    opacity: 0;
+    transform: translate(-3px, 3px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  :global(.dark) .live-arrow {
+    color: rgb(96 165 250);
+  }
+  .live:hover .live-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    animation: arrow-bob 1.1s ease-in-out infinite;
+  }
+  @keyframes arrow-bob {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(2px, -2px); }
+  }
+
+  /* name gradient shimmer on hover.
+     Base gradient stops use --name-color (NOT currentColor) so that setting the
+     text fill transparent during the sweep can't make the whole name vanish. */
+  .name-shine {
+    --name-color: #18181b;
+    background-image: linear-gradient(110deg, var(--name-color) 0%, var(--name-color) 42%, #3b82f6 50%, #8b5cf6 58%, #ec4899 66%, var(--name-color) 74%, var(--name-color) 100%);
+    background-size: 250% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  :global(.dark) .name-shine {
+    --name-color: #ffffff;
+  }
+  @media (hover: hover) {
+    .name-shine:hover {
+      -webkit-text-fill-color: transparent;
+      animation: name-sweep 1.1s ease;
+    }
+  }
+  @keyframes name-sweep {
+    from { background-position: 100% 0; }
+    to { background-position: 0% 0; }
+  }
+
+  /* Skill / award / course words become accent pills on hover (box-shadow = no reflow) */
+  .skill {
+    display: inline-block;
+    border-radius: 5px;
+    transition: color 0.15s ease, transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .skill:hover {
+    transform: translateY(-1px);
+    color: rgb(37 99 235);
+    background: rgba(59, 130, 246, 0.12);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+  }
+  :global(.dark) .skill:hover {
+    color: rgb(147 197 253);
+    background: rgba(96, 165, 250, 0.16);
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+  }
+
+  /* Animated underline on contact links */
+  .contact-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.25s ease;
+  }
+  .contact-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Expand-in-place */
+  .exp-trigger {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .exp-icon {
+    position: absolute;
+    top: -0.35rem;
+    right: -0.45rem;
+    font-size: 1.15rem;
+    line-height: 1;
+    color: rgb(37 99 235);
+    opacity: 0;
+    transform: rotate(0deg);
+    transition: opacity 0.18s ease, transform 0.25s ease;
+  }
+  :global(.dark) .exp-icon {
+    color: rgb(96 165 250);
+  }
+  .exp-trigger:hover .exp-icon {
+    opacity: 1;
+  }
+  :global(.expandable.is-open) .exp-icon {
+    opacity: 1;
+    transform: rotate(45deg);
+  }
+  .exp-panel {
+    overflow: hidden;
+    height: 0;
+    transition: height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .exp-inner {
+    margin-top: 0.7rem;
+    padding: 1rem 1.15rem 1.1rem;
+    border-radius: 0.85rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgb(63 63 70);
+    /* the "fun" reveal: soft multi-color gradient + a faint dot grid */
+    background-color: #f7f8fc;
+    background-image:
+      radial-gradient(125% 130% at 0% 0%, rgba(59, 130, 246, 0.14), transparent 55%),
+      radial-gradient(125% 130% at 100% 0%, rgba(139, 92, 246, 0.14), transparent 55%),
+      radial-gradient(140% 140% at 100% 100%, rgba(236, 72, 153, 0.13), transparent 55%),
+      radial-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 16px 16px;
+    box-shadow: 0 10px 30px -16px rgba(59, 130, 246, 0.45);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+  }
+  :global(.dark) .exp-inner {
+    color: rgb(212 212 216);
+    background-color: rgba(255, 255, 255, 0.025);
+    background-image:
+      radial-gradient(125% 130% at 0% 0%, rgba(59, 130, 246, 0.22), transparent 55%),
+      radial-gradient(125% 130% at 100% 0%, rgba(139, 92, 246, 0.22), transparent 55%),
+      radial-gradient(140% 140% at 100% 100%, rgba(236, 72, 153, 0.2), transparent 55%),
+      radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 16px 16px;
+    border-color: rgba(129, 140, 248, 0.28);
+    box-shadow: 0 12px 34px -18px rgba(99, 102, 241, 0.6);
+  }
+  .exp-excerpt {
+    margin: 0;
+  }
+  .exp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+  }
+  /* résumé / CV download buttons in the masthead */
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: rgb(63 63 70);
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+  }
+  .dl-btn:hover {
+    transform: translateY(-1px);
+    color: rgb(37 99 235);
+    border-color: rgba(99, 102, 241, 0.6);
+    background:
+      radial-gradient(120% 180% at 0% 0%, rgba(59, 130, 246, 0.1), transparent 60%),
+      radial-gradient(120% 180% at 100% 100%, rgba(236, 72, 153, 0.1), transparent 60%);
+  }
+  :global(.dark) .dl-btn {
+    color: rgb(212 212 216);
+    border-color: rgba(129, 140, 248, 0.35);
+  }
+  :global(.dark) .dl-btn:hover {
+    color: rgb(147 197 253);
+  }
+
+  .exp-meta {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: rgb(113 113 122);
+    margin-right: 0.15rem;
+  }
+  :global(.dark) .exp-meta {
+    color: rgb(161 161 170);
+  }
+  .exp-btn {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: rgb(37 99 235);
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+  .exp-btn:hover {
+    transform: translateY(-1px);
+    background: #fff;
+  }
+  .exp-btn-primary {
+    background: rgb(37 99 235);
+    color: #fff;
+    border-color: transparent;
+  }
+  .exp-btn-primary:hover {
+    background: rgb(29 78 216);
+  }
+  :global(.dark) .exp-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgb(147 197 253);
+  }
+  :global(.dark) .exp-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+  :global(.dark) .exp-btn-primary {
+    background: rgb(59 130 246);
+    color: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live, .live::before, .live-arrow, .resume-h::after, .skill, .contact-link::after, .exp-panel, .exp-icon {
+      transition: none;
+    }
+    .live:hover { transform: none; }
+    .live:hover .live-arrow { animation: none; }
+    .name-shine:hover { animation: none; }
+  }
+</style>
+
+<script>
+  // Cursor-following spotlight on the live cards
+  function initSpotlight() {
+    const cards = document.querySelectorAll<HTMLElement>('.live');
+    cards.forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+        el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+      });
+    });
+  }
+  initSpotlight();
+  document.addEventListener('astro:after-swap', initSpotlight);
+
+  // Expand-in-place: unfold an entry's full writeup inline
+  function initExpanders() {
+    document.querySelectorAll<HTMLButtonElement>('.exp-trigger').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.expandable');
+        if (!item) return;
+        const panel = item.querySelector<HTMLElement>('.exp-panel');
+        const open = !item.classList.contains('is-open');
+        item.classList.toggle('is-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (!panel) return;
+        if (open) {
+          panel.style.height = panel.scrollHeight + 'px';
+          const done = (e: TransitionEvent) => {
+            if (e.propertyName !== 'height') return;
+            panel.style.height = 'auto';
+            panel.removeEventListener('transitionend', done);
+          };
+          panel.addEventListener('transitionend', done);
+        } else {
+          panel.style.height = panel.getBoundingClientRect().height + 'px';
+          requestAnimationFrame(() => { panel.style.height = '0px'; });
+        }
+      });
+    });
+  }
+  initExpanders();
+  document.addEventListener('astro:after-swap', initExpanders);
+</script>
