@@ -1,10 +1,8 @@
-# Astro Starter Kit: Minimal
+# Blog - Resume
 
 ```sh
 npm create astro@latest -- --template minimal
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
 ## 🚀 Project Structure
 
