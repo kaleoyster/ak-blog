@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PublicationsTimeline from '../components/charts/PublicationsTimeline.tsx';
+import PublicationsStream from '../components/charts/PublicationsStream.tsx';
 
 const journal = [
   {
@@ -70,11 +70,11 @@ const timeline = groups.flatMap((g) =>
   <a href="/#publications" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
   <h1 class="text-2xl font-bold mt-3 mb-2">Publications</h1>
   <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-5">
-    {timeline.length} works, {new Date().getFullYear() - 2019}+ years — hover a dot for the title, click to open.
+    {timeline.length} works across {new Date().getFullYear() - 2019}+ years — how the mix of output shifts over time.
   </p>
 
   <div class="mb-10 rounded-xl border border-zinc-200/70 dark:border-zinc-700/70 bg-zinc-50/50 dark:bg-zinc-800/30 px-3 pt-3 pb-1">
-    <PublicationsTimeline client:load pubs={timeline} />
+    <PublicationsStream client:load pubs={timeline} />
   </div>
 
   <div class="space-y-10">
