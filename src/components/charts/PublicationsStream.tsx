@@ -9,14 +9,16 @@ export interface Pub {
   meta: string;
 }
 
-/** Ordered to read early-career → late-career; mirrors the site accent palette. */
+// Ordered early-career → late-career. Colors are a blue→violet ramp derived
+// (via HCL) from the site's signature gradient (#3b82f6 → #8b5cf6), so the
+// bands flow from light-blue early posters to the deep-violet dissertation.
 const TYPES = ['Poster', 'Thesis', 'Conference', 'Journal', 'Dissertation'];
 const COLORS: Record<string, string> = {
-  Journal: '#60a5fa',
-  Conference: '#34d399',
-  Poster: '#f472b6',
-  Thesis: '#fb923c',
-  Dissertation: '#a78bfa',
+  Poster: '#93c5fd',
+  Thesis: '#70a6fe',
+  Conference: '#5d84fa',
+  Journal: '#5f5eef',
+  Dissertation: '#6d28d9',
 };
 
 /**
