@@ -36,9 +36,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 // Search index for the ⌘K command palette.
 const pubTitles = [
+  { title: 'Model-Cart: A Machine Learning Meta-Framework with Explainability and Human-in-the-Loop', href: 'https://link.springer.com/chapter/10.1007/978-3-031-89063-5_27' },
   { title: 'A Comparative Assessment of Bridge Deck Wearing Surfaces', href: 'https://www.mdpi.com/2076-3417/13/19/10883' },
   { title: 'New Measure to Understand and Compare Bridge Conditions (Time-Series)', href: 'https://ascelibrary.org/doi/full/10.1061/%28ASCE%29IS.1943-555X.0000633' },
   { title: 'Toward Interactive Visualizations for Explaining Machine Learning Models', href: 'http://idl.iscram.org/files/ramsey/2023/2570_Ramsey_etal2023.pdf' },
+  { title: 'A Comparative Framework for Evaluating Machine Learning Model Explanations', href: 'https://www.proquest.com/openview/cc973a983790196d6446abebaf9d85e3/1?pq-origsite=gscholar&cbl=18750&diss=y' },
 ];
 
 type CmdItem = { title: string; kind: string; href: string; keywords?: string; external?: boolean };

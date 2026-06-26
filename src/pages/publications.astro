@@ -3,6 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const journal = [
   {
+    title: 'Model-Cart: A Machine Learning Meta-Framework with Explainability and Human-in-the-Loop',
+    meta: 'V Singh, Y Kassa, <strong>A Kale</strong>, B Ricks, R Gandhi · International Conference on Computer Safety, Reliability, and Security, Springer · 2025',
+    href: 'https://link.springer.com/chapter/10.1007/978-3-031-89063-5_27',
+  },
+  {
     title: 'A Comparative Assessment of Bridge Deck Wearing Surfaces: Performance, Deterioration, and Maintenance',
     meta: '<strong>A Kale</strong>, Y Kassa, B Ricks, R Gandhi · Applied Sciences, Vol. 13(19), 10883 · 2023',
     href: 'https://www.mdpi.com/2076-3417/13/19/10883',
@@ -38,11 +43,16 @@ const thesis = [
   { title: 'Identifying Predictors of Bridge Deterioration in the United States from a Data Science Perspective', meta: 'A Kale · University of Nebraska at Omaha', href: 'https://www.proquest.com/docview/2218468585?pq-origsite=gscholar&fromopenview=true' },
 ];
 
+const dissertation = [
+  { title: 'A Comparative Framework for Evaluating Machine Learning Model Explanations', meta: 'A Kale · University of Nebraska at Omaha · 2024', href: 'https://www.proquest.com/openview/cc973a983790196d6446abebaf9d85e3/1?pq-origsite=gscholar&cbl=18750&diss=y' },
+];
+
 const groups = [
   { name: 'Journal Papers', items: journal },
   { name: 'Conference Papers', items: conference },
   { name: 'Posters', items: posters },
   { name: "Master's Thesis", items: thesis },
+  { name: 'Ph.D. Dissertation', items: dissertation },
 ];
 ---
 
