@@ -2,29 +2,25 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const collection = (await getCollection('projects')).sort(
-  (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0)
-);
+const byDate = (a: any, b: any) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0);
+const collection = await getCollection('projects');
+const published = collection.filter((p) => p.data.status !== 'coming-soon').sort(byDate);
+const upcoming = collection.filter((p) => p.data.status === 'coming-soon');
 
-// Collection-backed projects, plus standalone/external ones not in the collection.
+// Published collection projects, plus standalone/external ones not in the collection.
 const cards = [
   { title: 'SCARED — Symptom Network Analysis', desc: 'Child–parent symptom network analysis of childhood anxiety, with an interactive arc-diagram visualization.', href: '/projects/scared', tags: ['Visualization', 'Networks'] },
-  ...collection.map((p) => ({ title: p.data.title, desc: p.data.description ?? '', href: `/projects/${p.id}`, tags: p.data.tags ?? [] })),
+  ...published.map((p) => ({ title: p.data.title, desc: p.data.description ?? '', href: `/projects/${p.id}`, tags: p.data.tags ?? [] })),
   { title: 'CoRA', desc: 'Interactive Forced Directed Network Graph to identify fallen World War II soldiers from their remains.', href: 'https://github.com/kaleoyster', external: true, tags: ['Visualization', 'D3.js'] },
 ];
 
-// In-progress work — shown as non-clickable "Coming soon" cards.
-const placeholders = [
-  { title: 'RiskRadar', desc: 'A synthetic construction analytics project that forecasts project risk using leading indicators, historical trends, and threshold-based classification.', tags: ['Machine Learning', 'Risk Modeling', 'Time-series'] },
-  { title: 'SignalStack', desc: 'A job-level scoring framework that combines inspection coverage, high-risk observations, workforce spread, and critical activity controls into a single risk score.', tags: ['Analytics', 'Risk Scoring', 'Dashboard'] },
-  { title: 'ProdCast', desc: 'A forecasting prototype that predicts final productivity outcomes from evolving schedule signals such as ramp deviation, peak labor shifts, baseline execution, and critical-path volatility.', tags: ['Forecasting', 'Schedule Analytics', 'Machine Learning'] },
-  { title: 'Overrun Oracle', desc: 'A risk-banding tool that estimates potential labor overrun exposure using predicted productivity, peer-group benchmarks, and percentile-based loss ranges.', tags: ['Business Impact', 'Simulation', 'Cost Modeling'] },
-  { title: 'RatioLab', desc: 'A benchmarking project that studies how staff ratios, project duration, subcontractor mix, and market segment affect indirect cost reliability.', tags: ['Statistics', 'Cost Analysis', 'Business Analytics'] },
-  { title: 'ScheduleScope', desc: 'An interactive analysis of how schedule instability, scope growth, critical-path changes, and labor ramp shifts relate to project outcomes.', tags: ['Regression', 'Visualization', 'Construction Analytics'] },
-  { title: 'HazardMapper', desc: 'An NLP prototype that maps safety observations into standardized risk categories to support trend analysis and preventative action.', tags: ['NLP', 'LLM', 'Safety Analytics'] },
-  { title: 'DriftDeck', desc: 'A monitoring dashboard for retrained machine-learning models, tracking performance, feature drift, and threshold stability over time.', tags: ['MLOps', 'Model Monitoring', 'Statistics'] },
-  { title: 'BuildGraph', desc: 'A graph-based prototype connecting projects, risks, schedule events, cost categories, and model explanations into an explorable knowledge network.', tags: ['GraphRAG', 'Knowledge Graphs', 'LLM'] },
-];
+// In-progress work — shown as "Coming soon" cards linking to a stub page.
+const placeholders = upcoming.map((p) => ({
+  title: p.data.title,
+  desc: p.data.description ?? '',
+  href: `/projects/${p.id}`,
+  tags: p.data.tags ?? [],
+}));
 
 const allTags = Array.from(new Set([...cards, ...placeholders].flatMap((c) => c.tags))).sort();
 ---
@@ -63,19 +59,20 @@ const allTags = Array.from(new Set([...cards, ...placeholders].flatMap((c) => c.
     ))}
 
     {placeholders.map((c) => (
-      <div
+      <a
+        href={c.href}
         data-tags={c.tags.join('|')}
-        class="project-card card-live group block border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-5 opacity-80"
+        class="project-card card-live group block border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-5 opacity-80 hover:opacity-100 transition-opacity"
       >
         <div class="flex items-start justify-between gap-2 mb-1">
-          <h2 class="font-semibold">{c.title}</h2>
+          <h2 class="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{c.title}</h2>
           <span class="shrink-0 text-[0.6rem] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700 rounded-full px-2 py-0.5">Coming soon</span>
         </div>
         <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">{c.desc}</p>
         <div class="flex flex-wrap gap-1.5 mt-3">
           {c.tags.map((t) => <span class="tag">{t}</span>)}
         </div>
-      </div>
+      </a>
     ))}
   </div>
 
