@@ -1,19 +1,29 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCardImage from '../../components/ProjectCardImage.astro';
 
-const collection = (await getCollection('projects')).sort(
-  (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0)
-);
+const byDate = (a: any, b: any) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0);
+const collection = await getCollection('projects');
+const published = collection.filter((p) => p.data.status !== 'coming-soon').sort(byDate);
+const upcoming = collection.filter((p) => p.data.status === 'coming-soon');
 
-// Collection-backed projects, plus standalone/external ones not in the collection.
+// Published collection projects, plus standalone/external ones not in the collection.
 const cards = [
   { title: 'SCARED — Symptom Network Analysis', desc: 'Child–parent symptom network analysis of childhood anxiety, with an interactive arc-diagram visualization.', href: '/projects/scared', tags: ['Visualization', 'Networks'] },
-  ...collection.map((p) => ({ title: p.data.title, desc: p.data.description ?? '', href: `/projects/${p.id}`, tags: p.data.tags ?? [] })),
+  ...published.map((p) => ({ title: p.data.title, desc: p.data.description ?? '', href: `/projects/${p.id}`, tags: p.data.tags ?? [], image: p.data.image })),
   { title: 'CoRA', desc: 'Interactive Forced Directed Network Graph to identify fallen World War II soldiers from their remains.', href: 'https://github.com/kaleoyster', external: true, tags: ['Visualization', 'D3.js'] },
 ];
 
-const allTags = Array.from(new Set(cards.flatMap((c) => c.tags))).sort();
+// In-progress work — shown as "Coming soon" cards linking to a stub page.
+const placeholders = upcoming.map((p) => ({
+  title: p.data.title,
+  desc: p.data.description ?? '',
+  href: `/projects/${p.id}`,
+  tags: p.data.tags ?? [],
+}));
+
+const allTags = Array.from(new Set([...cards, ...placeholders].flatMap((c) => c.tags))).sort();
 ---
 
 <BaseLayout title="Projects" description="Projects by Akshay Kale across machine learning, data science, and visualization.">
@@ -28,24 +38,47 @@ const allTags = Array.from(new Set(cards.flatMap((c) => c.tags))).sort();
     ))}
   </div>
 
-  <div id="project-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <div id="project-grid" class="grid grid-cols-1 gap-4">
     {cards.map((c) => (
       <a
         href={c.href}
         target={(c as any).external ? '_blank' : undefined}
         rel="noopener noreferrer"
         data-tags={c.tags.join('|')}
-        class="project-card card-live group block border border-zinc-200 dark:border-zinc-700 rounded-xl p-5"
+        class="project-card card-live group relative block min-h-[3.25rem] border border-zinc-200 dark:border-zinc-700 rounded-xl"
       >
-        <h2 class="font-semibold mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-          {c.title} {(c as any).external && <span class="text-xs">↗</span>}
-        </h2>
-        {c.desc && <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">{c.desc}</p>}
-        {c.tags.length > 0 && (
-          <div class="flex flex-wrap gap-1.5 mt-3">
+        <ProjectCardImage title={c.title} image={(c as any).image} />
+        <div class="relative z-10 max-w-[64%] sm:max-w-[56%] p-3">
+          <h2 class="font-semibold mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            {c.title} {(c as any).external && <span class="text-xs">↗</span>}
+          </h2>
+          {c.desc && <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-snug line-clamp-1">{c.desc}</p>}
+          {c.tags.length > 0 && (
+            <div class="flex flex-wrap gap-1.5 mt-1.5">
+              {c.tags.map((t) => <span class="tag">{t}</span>)}
+            </div>
+          )}
+        </div>
+      </a>
+    ))}
+
+    {placeholders.map((c) => (
+      <a
+        href={c.href}
+        data-tags={c.tags.join('|')}
+        class="project-card card-live group relative block min-h-[3.25rem] border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl opacity-80 hover:opacity-100 transition-opacity"
+      >
+        <ProjectCardImage title={c.title} />
+        <div class="relative z-10 max-w-[64%] sm:max-w-[56%] p-3">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h2 class="font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{c.title}</h2>
+            <span class="shrink-0 text-[0.6rem] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700 rounded-full px-2 py-0.5">Coming soon</span>
+          </div>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-snug line-clamp-1">{c.desc}</p>
+          <div class="flex flex-wrap gap-1.5 mt-1.5">
             {c.tags.map((t) => <span class="tag">{t}</span>)}
           </div>
-        )}
+        </div>
       </a>
     ))}
   </div>

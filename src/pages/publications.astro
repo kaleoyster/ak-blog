@@ -1,75 +1,29 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicationsRiver from '../components/charts/PublicationsRiver.tsx';
+import { publicationGroups } from '../data/publications';
 
-const journal = [
-  {
-    title: 'A Comparative Assessment of Bridge Deck Wearing Surfaces: Performance, Deterioration, and Maintenance',
-    meta: '<strong>A Kale</strong>, Y Kassa, B Ricks, R Gandhi · Applied Sciences, Vol. 13(19), 10883 · 2023',
-    href: 'https://www.mdpi.com/2076-3417/13/19/10883',
-  },
-  {
-    title: 'New Measure to Understand and Compare Bridge Conditions Based on Inspections Time-Series Data',
-    meta: '<strong>A Kale</strong>, B Ricks, R Gandhi · Journal of Infrastructure Systems, Vol. 27(4), 04021037 · 2021',
-    href: 'https://ascelibrary.org/doi/full/10.1061/%28ASCE%29IS.1943-555X.0000633',
-  },
-];
-
-const conference = [
-  {
-    title: 'Toward Interactive Visualizations for Explaining Machine Learning Models',
-    meta: 'A Ramsey, <strong>A Kale</strong>, Y Kassa, R Gandhi, B Ricks · 2023',
-    href: 'http://idl.iscram.org/files/ramsey/2023/2570_Ramsey_etal2023.pdf',
-    extras: [
-      { label: 'Interactive heatmap →', href: 'https://repairs.ricks.io/tree.html?state=IL&features=designatedInspectionFrequency&repair=substructure&eg=Entropy' },
-      { label: 'Interactive 2D matrix →', href: 'https://repairs.ricks.io/twoFeatureMatrix.html' },
-    ],
-  },
-];
-
-const posters = [
-  { title: 'How to Select Simple-Yet-Accurate Model of Bridge Maintenance?', meta: 'A Kale, Y Kassa, B Ricks, R Gandhi · 2023', href: 'https://digitalcommons.unomaha.edu/cgi/viewcontent.cgi?article=1067&context=isqafacproc' },
-  { title: 'Progress in a New Visualization Strategy for ML Models', meta: 'A Wissing, B Ricks, R Gandhi, Y Kassa, A Kale · 2023', href: 'https://digitalcommons.unomaha.edu/cgi/viewcontent.cgi?article=1066&context=isqafacproc' },
-  { title: 'Building Interpretable Methods For Identifying Bridge Maintenance Patterns', meta: 'A Kale · 2022', href: 'https://digitalcommons.unomaha.edu/srcaf/2022/schedule/116/' },
-  { title: 'Temporal Analysis of Disinformation', meta: 'A Kale, D Abeyrathna · 2020', href: 'https://digitalcommons.unomaha.edu/srcaf/2020/schedule/103/' },
-  { title: 'Understanding the Effects of Precipitation on Bridge Health in the US', meta: 'A Kale · 2019', href: 'https://digitalcommons.unomaha.edu/srcaf/2019/Schedule/139/' },
-];
-
-const thesis = [
-  { title: 'Identifying Predictors of Bridge Deterioration in the United States from a Data Science Perspective', meta: 'A Kale · University of Nebraska at Omaha', href: 'https://www.proquest.com/docview/2218468585?pq-origsite=gscholar&fromopenview=true' },
-];
-
-const groups = [
-  { name: 'Journal Papers', items: journal },
-  { name: 'Conference Papers', items: conference },
-  { name: 'Posters', items: posters },
-  { name: "Master's Thesis", items: thesis },
-];
+// Flatten into a single series for the annotated river.
+const timeline = publicationGroups.flatMap((g) =>
+  g.items.map((p) => ({
+    title: p.title,
+    href: p.href,
+    year: p.year,
+    type: g.type,
+    meta: p.meta,
+    extras: p.extras ?? [],
+  }))
+);
 ---
 
 <BaseLayout title="Publications" description="Peer-reviewed publications, conference papers, posters, and thesis by Akshay Kale.">
   <a href="/#publications" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
-  <h1 class="text-2xl font-bold mt-3 mb-8">Publications</h1>
+  <h1 class="text-2xl font-bold mt-3 mb-2">Publications</h1>
+  <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-5">
+    {timeline.length} works across {new Date().getFullYear() - 2019}+ years — a stream of output by type over time, newest first, annotated with each work.
+  </p>
 
-  <div class="space-y-10">
-    {groups.map((g) => (
-      <section>
-        <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-4">{g.name}</h2>
-        <ul class="space-y-5">
-          {g.items.map((p) => (
-            <li>
-              <a href={p.href} target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 dark:text-blue-400 hover:underline">{p.title}</a>
-              <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1" set:html={p.meta}></p>
-              {(p as any).extras && (
-                <div class="flex gap-3 mt-1 text-xs text-zinc-400 dark:text-zinc-500">
-                  {(p as any).extras.map((e: any) => (
-                    <a href={e.href} target="_blank" rel="noopener noreferrer" class="hover:text-blue-500">{e.label}</a>
-                  ))}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))}
+  <div class="mb-10">
+    <PublicationsRiver client:load pubs={timeline} />
   </div>
 </BaseLayout>

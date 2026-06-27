@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { experience } from '../data/experience';
+---
+
+<BaseLayout title="Experience" description="Work experience of Akshay Kale across machine learning, data science, and research.">
+  <a href="/#summary" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
+  <h1 class="text-2xl font-bold mt-3 mb-8">Experience</h1>
+
+  <div class="space-y-10">
+    {experience.map((job) => (
+      <section class="relative border-l border-zinc-200 dark:border-zinc-700 pl-5">
+        <span class="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-blue-500 dark:bg-blue-400"></span>
+        <div class="flex items-start gap-3">
+          {job.orgLogo && (
+            <img
+              src={job.orgLogo}
+              alt={`${job.org} logo`}
+              class="shrink-0 object-contain"
+              style={`width: ${36 * (job.logoScale ?? 1)}px; height: ${36 * (job.logoScale ?? 1)}px;`}
+            />
+          )}
+          <div>
+            <h2 class="font-bold text-lg">
+              {job.role}
+              <span class="font-semibold text-zinc-500 dark:text-zinc-400"> – {job.org}</span>
+            </h2>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">{job.period}</p>
+          </div>
+        </div>
+        <ul class="list-disc pl-4 mt-3 space-y-2 text-zinc-700 dark:text-zinc-300 leading-snug">
+          {job.points.map((p) => <li>{p}</li>)}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

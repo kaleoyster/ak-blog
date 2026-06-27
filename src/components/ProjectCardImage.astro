@@ -1,0 +1,41 @@
+---
+// Diagonally-clipped image panel for project cards. Shows a representative
+// image when provided, otherwise a deterministic on-theme gradient + monogram
+// placeholder so each project still looks distinct.
+interface Props {
+  title: string;
+  image?: string;
+}
+const { title, image } = Astro.props;
+
+// Blue→violet gradient pairs (site palette); pick one deterministically.
+const GRADIENTS = [
+  ['#3b82f6', '#8b5cf6'],
+  ['#60a5fa', '#6d28d9'],
+  ['#6366f1', '#a78bfa'],
+  ['#38bdf8', '#6366f1'],
+  ['#818cf8', '#7c3aed'],
+];
+let h = 0;
+for (let i = 0; i < title.length; i++) h = (h * 31 + title.charCodeAt(i)) >>> 0;
+const [from, to] = GRADIENTS[h % GRADIENTS.length];
+
+const word = (title.match(/[A-Za-z]+/) || ['?'])[0];
+const monogram = word.slice(0, 2).toUpperCase();
+---
+
+<div
+  class="absolute inset-y-0 right-0 w-[35%] sm:w-[42%]"
+  style="clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%)"
+>
+  {image ? (
+    <img src={image} alt="" class="h-full w-full object-cover" loading="lazy" />
+  ) : (
+    <div
+      class="flex h-full w-full items-center justify-center"
+      style={`background-image: linear-gradient(135deg, ${from}, ${to})`}
+    >
+      <span class="select-none text-3xl font-bold tracking-wider text-white/35">{monogram}</span>
+    </div>
+  )}
+</div>
