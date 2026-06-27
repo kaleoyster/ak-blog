@@ -9,6 +9,7 @@ const posts = (await getCollection('posts')).filter((p) => !p.data.draft);
 // (home = "index"), so BaseLayout can map pathname → /og/<key>.png.
 const pages: Record<string, { title: string; description: string }> = {
   index: { title: 'Akshay Kale', description: 'Artificial Intelligence · Data Science · Research' },
+  experience: { title: 'Experience', description: 'Machine learning & data science work history' },
   projects: { title: 'Projects', description: 'Machine learning, data science & visualization work' },
   publications: { title: 'Publications', description: 'Journals, conference papers, posters & thesis' },
   research: { title: 'Research Notes', description: 'Methods & metrics in applied ML' },

@@ -1,21 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 
+export interface Extra {
+  label: string;
+  href: string;
+}
+
 export interface Pub {
   title: string;
   href: string;
   year: number;
   type: string;
   meta: string;
+  extras?: Extra[];
 }
 
 /** Early-career → late-career order; blue→violet ramp from the site gradient. */
-const TYPES = ['Poster', 'Thesis', 'Conference', 'Journal', 'Dissertation'];
+const TYPES = ['Poster', 'Research', 'Thesis', 'Conference', 'Journal', 'Dissertation'];
 const COLORS: Record<string, string> = {
   Poster: '#93c5fd',
-  Thesis: '#70a6fe',
-  Conference: '#5d84fa',
-  Journal: '#5f5eef',
+  Research: '#76acfe',
+  Thesis: '#6292fc',
+  Conference: '#5c75f6',
+  Journal: '#6155eb',
   Dissertation: '#6d28d9',
 };
 
@@ -55,11 +62,12 @@ export default function PublicationsRiver({ pubs }: { pubs: Pub[] }) {
 
     const isNarrow = width < 560;
     const margin = { top: 30, bottom: 30, left: 38 };
-    const h = Math.max(560, pubs.length * (isNarrow ? 64 : 56) + 90);
+    const h = Math.max(620, pubs.length * (isNarrow ? 104 : 86) + 90);
 
     const minYear = Math.min(...pubs.map((p) => p.year));
     const maxYear = Math.max(...pubs.map((p) => p.year));
-    const yScale = d3.scaleLinear().domain([minYear, maxYear]).range([margin.top, h - margin.bottom]);
+    // Newest year at the top: max → margin.top, min → bottom.
+    const yScale = d3.scaleLinear().domain([minYear, maxYear]).range([h - margin.bottom, margin.top]);
 
     // Year × type grid, stacked with a wiggle (streamgraph) offset.
     const byYear = d3.range(minYear, maxYear + 1).map((year) => {
@@ -126,7 +134,7 @@ export default function PublicationsRiver({ pubs }: { pubs: Pub[] }) {
 
     // Place labels on the right, resolving vertical overlaps.
     const lx = streamLeft + streamWidth + (isNarrow ? 38 : 62);
-    const gap = isNarrow ? 66 : 56;
+    const gap = isNarrow ? 104 : 86;
     const sorted = [...origins].sort((a, b) => a.oy - b.oy);
     let last = -Infinity;
     sorted.forEach((l) => {
@@ -186,26 +194,44 @@ export default function PublicationsRiver({ pubs }: { pubs: Pub[] }) {
         <svg ref={svgRef} style={{ color: 'inherit', overflow: 'visible' }} />
 
       {placed.map((l) => (
-        <a
+        <div
           key={l.title}
-          href={l.href}
-          target="_blank"
-          rel="noopener noreferrer"
           className="group absolute"
           style={{ top: l.y, left: labelX, width: width - labelX - 2, transform: 'translateY(-50%)' }}
         >
           <div className="flex items-start gap-2">
-            <span className="mt-1 h-2 w-2 shrink-0 rounded-full" style={{ background: COLORS[l.type] }} />
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: COLORS[l.type] }} />
             <div className="min-w-0">
-              <div className="line-clamp-2 text-xs font-medium leading-snug text-zinc-700 transition-colors group-hover:text-blue-600 dark:text-zinc-200 dark:group-hover:text-blue-400">
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="line-clamp-2 text-[0.8rem] font-medium leading-snug text-blue-600 transition-colors hover:underline dark:text-blue-400"
+              >
                 {l.title}
-              </div>
-              <div className="mt-0.5 text-[0.65rem] uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
-                {l.type} · {l.year}
-              </div>
+              </a>
+              <p
+                className="mt-0.5 line-clamp-2 text-[0.7rem] leading-snug text-zinc-500 dark:text-zinc-400"
+                dangerouslySetInnerHTML={{ __html: l.meta }}
+              />
+              {l.extras && l.extras.length > 0 && (
+                <div className="mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[0.65rem] text-zinc-400 dark:text-zinc-500">
+                  {l.extras.map((e) => (
+                    <a
+                      key={e.href}
+                      href={e.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-blue-500"
+                    >
+                      {e.label}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        </a>
+        </div>
       ))}
       </div>
     </div>

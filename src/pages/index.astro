@@ -1,18 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const byDate = (a: any, b: any) =>
-  (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0);
+import { experience } from '../data/experience';
 
 const projectEntries = await getCollection('projects');
-const researchEntries = (await getCollection('research')).sort(byDate);
-const postEntries = (await getCollection('posts'))
-  .filter((p) => !p.data.draft)
-  .sort(byDate);
-
-const fmt = (d?: Date) =>
-  d ? d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '';
 
 // Short teaser pulled from each entry's markdown — the expanded panel is a
 // preview, not the whole page.
@@ -31,7 +22,7 @@ function excerpt(md: string | undefined, max = 300) {
 }
 
 const meta: Record<string, { excerpt: string; github?: string; demo?: string; minutes: number }> = {};
-for (const e of [...projectEntries, ...researchEntries, ...postEntries]) {
+for (const e of projectEntries) {
   const words = (e.body || '').trim().split(/\s+/).filter(Boolean).length;
   meta[`${e.collection}/${e.id}`] = {
     excerpt: excerpt(e.body),
@@ -75,20 +66,6 @@ const summary = [
   '5+ years of experience in machine learning modeling with publications',
   'Academic research focused on explainable artificial intelligence',
   'Ph.D. in Artificial Intelligence, completed May 2024',
-];
-
-const experience = [
-  {
-    role: 'Machine Learning Engineer',
-    org: 'University of Nebraska (UNO)',
-    period: 'January 2017 – May 2024',
-    points: [
-      'Trained machine learning models with 98% accuracy, an improvement by 10% in comparison to state-of-the-art, in structural health monitoring',
-      'Collaborated with engineers, bridge managers, and researchers to develop and implement machine learning and deep learning models for prediction of bridge maintenance, resulting in 3 research publications and other ongoing work',
-      'Created web crawlers for scraping environment, population, and inspection records resulting in a collection of over 21 million records',
-      'Communicated results analysis through interactive visualizations, written reports, publications, and presentations',
-    ],
-  },
 ];
 
 const projects = [
@@ -218,16 +195,18 @@ const publications = [
       </section>
 
       <section id="experience" class="sec scroll-mt-20">
-        <h2 class="resume-h">Transferable Skill</h2>
-        {experience.map((job) => (
-          <div>
-            <p class="font-bold">{job.role} <span class="resume-caps font-semibold text-zinc-500 dark:text-zinc-400">– {job.org}</span></p>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{job.period}</p>
-            <ul class="resume-list">
-              {job.points.map((p) => <li>{p}</li>)}
-            </ul>
-          </div>
-        ))}
+        <a href="/experience" class="resume-h rh-link">Experience<span class="rh-arrow">→</span></a>
+        <div class="space-y-6">
+          {experience.map((job) => (
+            <div>
+              <p class="font-bold">{job.role} <span class="resume-caps font-semibold text-zinc-500 dark:text-zinc-400">– {job.org}</span></p>
+              <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{job.period}</p>
+              <ul class="resume-list">
+                {job.summaryPoints.map((p) => <li>{p}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section id="projects" class="sec scroll-mt-20">
@@ -285,66 +264,6 @@ const publications = [
           ))}
         </div>
       </section>
-
-      {researchEntries.length > 0 && (
-        <section id="research" class="sec scroll-mt-20">
-          <a href="/research" class="resume-h rh-link">Research Notes<span class="rh-arrow">→</span></a>
-          <div class="space-y-3">
-            {researchEntries.map((item) => {
-              const info = meta[`research/${item.id}`];
-              return (
-                <div class="expandable">
-                  <button type="button" aria-expanded="false" class="exp-trigger live group block w-full text-left">
-                    <span class="exp-icon">+</span>
-                    <p class="font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.data.title}</p>
-                    {item.data.description && (
-                      <p class="text-sm text-zinc-500 dark:text-zinc-400">{item.data.description}</p>
-                    )}
-                  </button>
-                  <div class="exp-panel"><div class="exp-inner">
-                    <p class="exp-excerpt">{info.excerpt}</p>
-                    <div class="exp-actions">
-                      <a class="exp-btn exp-btn-primary" href={`/research/${item.id}`}>Open full page →</a>
-                    </div>
-                  </div></div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {postEntries.length > 0 && (
-        <section id="writing" class="sec scroll-mt-20">
-          <a href="/blog" class="resume-h rh-link">Writing<span class="rh-arrow">→</span></a>
-          <div class="space-y-3">
-            {postEntries.map((post) => {
-              const info = meta[`posts/${post.id}`];
-              return (
-                <div class="expandable">
-                  <button type="button" aria-expanded="false" class="exp-trigger live group block w-full text-left">
-                    <span class="exp-icon">+</span>
-                    <div class="flex items-baseline justify-between gap-3">
-                      <p class="font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{post.data.title}</p>
-                      <span class="shrink-0 text-xs text-zinc-400 dark:text-zinc-500">{fmt(post.data.date)}</span>
-                    </div>
-                    {post.data.description && (
-                      <p class="text-sm text-zinc-500 dark:text-zinc-400">{post.data.description}</p>
-                    )}
-                  </button>
-                  <div class="exp-panel"><div class="exp-inner">
-                    <p class="exp-excerpt">{info.excerpt}</p>
-                    <div class="exp-actions">
-                      <span class="exp-meta">{info.minutes} min read</span>
-                      <a class="exp-btn exp-btn-primary" href={`/blog/${post.id}`}>Read post →</a>
-                    </div>
-                  </div></div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
   </div>
 </BaseLayout>
 

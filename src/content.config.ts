@@ -20,6 +20,7 @@ const projects = defineCollection({
     date: z.coerce.date().optional(),
     github: z.string().url().optional(),
     demo: z.string().url().optional(),
+    image: z.string().optional(),
     status: z.enum(['published', 'coming-soon']).optional().default('published'),
     tags: z.array(z.string()).optional().default([]),
   }),
