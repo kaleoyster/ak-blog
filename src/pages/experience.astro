@@ -11,12 +11,24 @@ import { experience } from '../data/experience';
     {experience.map((job) => (
       <section class="relative border-l border-zinc-200 dark:border-zinc-700 pl-5">
         <span class="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-blue-500 dark:bg-blue-400"></span>
-        <h2 class="font-bold text-lg">
-          {job.role}
-          <span class="font-semibold text-zinc-500 dark:text-zinc-400"> – {job.org}</span>
-        </h2>
-        <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{job.period}</p>
-        <ul class="list-disc pl-4 space-y-2 text-zinc-700 dark:text-zinc-300 leading-snug">
+        <div class="flex items-start gap-3">
+          {job.orgLogo && (
+            <img
+              src={job.orgLogo}
+              alt={`${job.org} logo`}
+              class="shrink-0 object-contain"
+              style={`width: ${36 * (job.logoScale ?? 1)}px; height: ${36 * (job.logoScale ?? 1)}px;`}
+            />
+          )}
+          <div>
+            <h2 class="font-bold text-lg">
+              {job.role}
+              <span class="font-semibold text-zinc-500 dark:text-zinc-400"> – {job.org}</span>
+            </h2>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">{job.period}</p>
+          </div>
+        </div>
+        <ul class="list-disc pl-4 mt-3 space-y-2 text-zinc-700 dark:text-zinc-300 leading-snug">
           {job.points.map((p) => <li>{p}</li>)}
         </ul>
       </section>
