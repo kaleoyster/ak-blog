@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../utils/withBase';
 
 const research = (await getCollection('research')).sort(
   (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0)
@@ -11,13 +12,13 @@ const fmt = (d?: Date) =>
 ---
 
 <BaseLayout title="Research" description="Research notes and methods by Akshay Kale.">
-  <a href="/#research" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
+  <a href={withBase('/#research')} class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
   <h1 class="text-2xl font-bold mt-3 mb-8">Research Notes</h1>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {research.map((item) => (
       <a
-        href={`/research/${item.id}`}
+        href={withBase(`/research/${item.id}`)}
         class="card-live group block border border-zinc-200 dark:border-zinc-700 rounded-xl p-5"
       >
         <h2 class="font-semibold mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{item.data.title}</h2>

@@ -2,12 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PublicationsRiver from '../components/charts/PublicationsRiver.tsx';
 import { publicationGroups } from '../data/publications';
+import { withBase } from '../utils/withBase';
 
 // Flatten into a single series for the annotated river.
 const timeline = publicationGroups.flatMap((g) =>
   g.items.map((p) => ({
     title: p.title,
-    href: p.href,
+    href: p.href.startsWith('http') ? p.href : withBase(p.href),
     year: p.year,
     type: g.type,
     meta: p.meta,
@@ -17,7 +18,7 @@ const timeline = publicationGroups.flatMap((g) =>
 ---
 
 <BaseLayout title="Publications" description="Peer-reviewed publications, conference papers, posters, and thesis by Akshay Kale.">
-  <a href="/#publications" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
+  <a href={withBase('/#publications')} class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
   <h1 class="text-2xl font-bold mt-3 mb-2">Publications</h1>
   <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-5">
     {timeline.length} works across {new Date().getFullYear() - 2019}+ years — a stream of output by type over time, newest first, annotated with each work.

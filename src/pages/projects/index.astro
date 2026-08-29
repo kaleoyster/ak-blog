@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCardImage from '../../components/ProjectCardImage.astro';
+import { withBase } from '../../utils/withBase';
 
 const byDate = (a: any, b: any) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0);
 const collection = await getCollection('projects');
@@ -10,8 +11,8 @@ const upcoming = collection.filter((p) => p.data.status === 'coming-soon');
 
 // Published collection projects, plus standalone/external ones not in the collection.
 const cards = [
-  { title: 'SCARED — Symptom Network Analysis', desc: 'Child–parent symptom network analysis of childhood anxiety, with an interactive arc-diagram visualization.', href: '/projects/scared', tags: ['Visualization', 'Networks'] },
-  ...published.map((p) => ({ title: p.data.title, desc: p.data.description ?? '', href: `/projects/${p.id}`, tags: p.data.tags ?? [], image: p.data.image })),
+  { title: 'SCARED — Symptom Network Analysis', desc: 'Child–parent symptom network analysis of childhood anxiety, with an interactive arc-diagram visualization.', href: withBase('/projects/scared'), tags: ['Visualization', 'Networks'] },
+  ...published.map((p) => ({ title: p.data.title, desc: p.data.description ?? '', href: withBase(`/projects/${p.id}`), tags: p.data.tags ?? [], image: p.data.image })),
   { title: 'CoRA', desc: 'Interactive Forced Directed Network Graph to identify fallen World War II soldiers from their remains.', href: 'https://github.com/kaleoyster', external: true, tags: ['Visualization', 'D3.js'] },
 ];
 
@@ -19,7 +20,7 @@ const cards = [
 const placeholders = upcoming.map((p) => ({
   title: p.data.title,
   desc: p.data.description ?? '',
-  href: `/projects/${p.id}`,
+  href: withBase(`/projects/${p.id}`),
   tags: p.data.tags ?? [],
 }));
 
@@ -27,7 +28,7 @@ const allTags = Array.from(new Set([...cards, ...placeholders].flatMap((c) => c.
 ---
 
 <BaseLayout title="Projects" description="Projects by Akshay Kale across machine learning, data science, and visualization.">
-  <a href="/#projects" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
+  <a href={withBase('/#projects')} class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← Back to résumé</a>
   <h1 class="text-2xl font-bold mt-3 mb-5">Projects</h1>
 
   <!-- Filter chips -->

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { experience } from '../data/experience';
+import { withBase } from '../utils/withBase';
 
 const projectEntries = await getCollection('projects');
 
@@ -40,32 +41,32 @@ const contacts = [
   { label: '+1 (402) 510 0497', href: 'tel:+14025100497' },
 ];
 
+const tagline = 'Production ML | LLM Applications | MLOps | Cloud Infrastructure';
+
 const education = [
-  { degree: 'Ph.D.', field: 'Artificial Intelligence, UNO', period: 'August 2019 – May 2024' },
-  { degree: 'Master of Science', field: 'Computer Science, UNO', period: 'August 2016 – May 2019' },
+  { degree: 'Ph.D.', field: 'Artificial Intelligence, University of Nebraska Omaha', period: '2019 – 2024' },
+  { degree: 'M.S.', field: 'Computer Science, University of Nebraska Omaha', period: '2016 – 2019' },
 ];
 
 const skills = [
-  { group: 'Languages', items: ['Python', 'R', 'Java', 'JavaScript', 'MLflow', 'LaTeX', 'C'] },
-  { group: 'Tools and Frameworks', items: ['SkLearn', 'PyTorch', 'Keras / Tensorflow', 'GGplot', 'Plotly', 'Seaborn', 'SQL', 'MongoDB', 'Matplotlib', 'Git', 'Unix', 'Vim', 'Jupyter Notebook'] },
-];
-
-const coursework = [
-  'Deep Learning', 'Statistical and Machine Learning', 'Data Structures and Algorithms',
-  'Statistics', 'Data Storytelling', 'Database Management',
+  { group: 'Programming', items: ['Python', 'SQL', 'Java', 'JavaScript', 'R', 'C', 'PHP'] },
+  { group: 'Machine Learning', items: ['Scikit-Learn', 'PyTorch', 'TensorFlow', 'Statsmodels', 'LLMs', 'RAG', 'LangChain', 'Hugging Face', 'Agents', 'MCP', 'Generative AI', 'Explainable AI (XAI)', 'Knowledge Graphs', 'NLP'] },
+  { group: 'Cloud & Data', items: ['Azure', 'Snowflake', 'Databricks', 'Modal'] },
+  { group: 'MLOps', items: ['Docker', 'Dagster', 'MLflow', 'Git', 'REST APIs', 'Linux', 'Jupyter'] },
+  { group: 'Data Engineering', items: ['Pandas', 'Polars', 'NumPy', 'Feature Engineering', 'Data Pipelines'] },
 ];
 
 const awards = [
   'Best Visualization, Datapalooza 2019',
-  'Best Speaker, PIIT, India',
-  'Research Scholarship, UNO',
-  'Advantage Scholarship, UNO',
+  'Research Scholarship, University of Nebraska',
+  'Advantage Scholarship, University of Nebraska',
 ];
 
 const summary = [
-  '5+ years of experience in machine learning modeling with publications',
-  'Academic research focused on explainable artificial intelligence',
-  'Ph.D. in Artificial Intelligence, completed May 2024',
+  'Machine Learning Engineer with 2+ years building production AI systems and a Ph.D. in Artificial Intelligence',
+  'Experienced across the full ML lifecycle, from data engineering to deployment and monitoring',
+  'Built scalable predictive analytics and decision-support solutions for enterprise operations',
+  'Skilled in MLOps, LLMs, RAG, explainable AI, and cloud-based ML pipelines',
 ];
 
 const projects = [
@@ -107,19 +108,24 @@ const publications = [
 ];
 ---
 
-<BaseLayout title="Akshay Kale" description="Artificial Intelligence | Data Science | Research">
+<BaseLayout title="Akshay Kale" description={tagline}>
   <!-- Masthead -->
   <header class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-6 border-b border-zinc-200 dark:border-zinc-700">
     <div>
       <h1 class="name-shine font-display text-4xl sm:text-5xl font-semibold tracking-tight">Akshay Kale</h1>
       <p class="mt-1 text-lg sm:text-xl font-light text-zinc-600 dark:text-zinc-300">
-        Artificial Intelligence <span class="text-zinc-300 dark:text-zinc-600">|</span> Data Science <span class="text-zinc-300 dark:text-zinc-600">|</span> Research
+        {tagline.split(' | ').map((part, i, arr) => (
+          <>
+            {part}
+            {i < arr.length - 1 && <span class="text-zinc-300 dark:text-zinc-600"> | </span>}
+          </>
+        ))}
       </p>
       <div class="mt-3 flex flex-wrap gap-2">
-        <a href="/pdf/Akshay_Kale_Resume.pdf" target="_blank" rel="noopener noreferrer" class="dl-btn">
+        <a href={withBase('/pdf/Akshay_Kale_Resume.pdf')} target="_blank" rel="noopener noreferrer" class="dl-btn">
           Résumé <span aria-hidden="true">↓</span>
         </a>
-        <a href="/pdf/Akshay_Kale_CV.pdf" target="_blank" rel="noopener noreferrer" class="dl-btn">
+        <a href={withBase('/pdf/Akshay_Kale_CV.pdf')} target="_blank" rel="noopener noreferrer" class="dl-btn">
           CV <span aria-hidden="true">↓</span>
         </a>
       </div>
@@ -170,15 +176,7 @@ const publications = [
       </section>
 
       <section class="sec">
-        <h2 class="resume-h">Coursework</h2>
-        <p class="font-bold text-sm mb-1">Graduate</p>
-        <ul class="text-sm text-zinc-600 dark:text-zinc-400 space-y-0.5">
-          {coursework.map((c) => <li><span class="skill hover:text-zinc-900 dark:hover:text-white transition-colors">{c}</span></li>)}
-        </ul>
-      </section>
-
-      <section class="sec">
-        <h2 class="resume-h">Awards</h2>
+        <h2 class="resume-h">Honors</h2>
         <ul class="text-sm text-zinc-600 dark:text-zinc-400 space-y-0.5">
           {awards.map((a) => <li><span class="skill hover:text-zinc-900 dark:hover:text-white transition-colors">{a}</span></li>)}
         </ul>
@@ -195,7 +193,7 @@ const publications = [
       </section>
 
       <section id="experience" class="sec scroll-mt-20">
-        <a href="/experience" class="resume-h rh-link">Experience<span class="rh-arrow">→</span></a>
+        <a href={withBase('/experience')} class="resume-h rh-link">Experience<span class="rh-arrow">→</span></a>
         <div class="space-y-6">
           {experience.map((job) => (
             <div>
@@ -210,7 +208,7 @@ const publications = [
       </section>
 
       <section id="projects" class="sec scroll-mt-20">
-        <a href="/projects" class="resume-h rh-link">Selected Projects<span class="rh-arrow">→</span></a>
+        <a href={withBase('/projects')} class="resume-h rh-link">Selected Projects<span class="rh-arrow">→</span></a>
         <div class="space-y-5">
           {projects.map((p) => {
             const info = p.entry ? meta[p.entry] : null;
@@ -237,7 +235,7 @@ const publications = [
                   <div class="exp-actions">
                     {info.github && <a class="exp-btn" href={info.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}
                     {info.demo && <a class="exp-btn" href={info.demo} target="_blank" rel="noopener noreferrer">Live demo ↗</a>}
-                    <a class="exp-btn exp-btn-primary" href={p.page}>Open full page →</a>
+                    <a class="exp-btn exp-btn-primary" href={withBase(p.page)}>Open full page →</a>
                   </div>
                 </div></div>
               </div>
@@ -251,7 +249,7 @@ const publications = [
   <!-- Publications onward: full-width single column -->
   <div class="space-y-10 mt-10">
       <section id="publications" class="sec scroll-mt-20">
-        <a href="/publications" class="resume-h rh-link">Top Three Publications<span class="rh-arrow">→</span></a>
+        <a href={withBase('/publications')} class="resume-h rh-link">Top Three Publications<span class="rh-arrow">→</span></a>
         <div class="space-y-4">
           {publications.map((p) => (
             <a href={p.href} target="_blank" rel="noopener noreferrer" class="live group block">

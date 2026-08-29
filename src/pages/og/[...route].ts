@@ -8,8 +8,8 @@ const posts = (await getCollection('posts')).filter((p) => !p.data.draft);
 // One entry per page we want a social card for. Keys mirror the URL path
 // (home = "index"), so BaseLayout can map pathname → /og/<key>.png.
 const pages: Record<string, { title: string; description: string }> = {
-  index: { title: 'Akshay Kale', description: 'Artificial Intelligence · Data Science · Research' },
-  experience: { title: 'Experience', description: 'Machine learning & data science work history' },
+  index: { title: 'Akshay Kale', description: 'Production ML · LLM Applications · MLOps · Cloud Infrastructure' },
+  experience: { title: 'Experience', description: 'Production ML engineering & XAI research' },
   projects: { title: 'Projects', description: 'Machine learning, data science & visualization work' },
   publications: { title: 'Publications', description: 'Journals, conference papers, posters & thesis' },
   research: { title: 'Research Notes', description: 'Methods & metrics in applied ML' },

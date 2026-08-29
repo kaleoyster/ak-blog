@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../utils/withBase';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -42,7 +43,7 @@ const { Content } = await render(project);
       <Content />
     </div>
     <div class="mt-10">
-      <a href="/#projects" class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+      <a href={withBase('/#projects')} class="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
         ← Back to Projects
       </a>
     </div>
